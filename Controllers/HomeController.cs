@@ -15,16 +15,23 @@ namespace college_assignment_mvc_project.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Search()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Your search page.";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Login()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Your login page.";
+
+            return View();
+        }
+
+        public IActionResult SignUp()
+        {
+            ViewData["Message"] = "Your sign up page.";
 
             return View();
         }
