@@ -17,5 +17,9 @@ namespace college_assignment_mvc_project.Models
         public DbSet<college_assignment_mvc_project.Models.Track> Track { get; set; }
 
         public DbSet<college_assignment_mvc_project.Models.Guide> Guide { get; set; }
+
+        public DbSet<college_assignment_mvc_project.Models.User> User { get; set; }
+
+        public DbSet<college_assignment_mvc_project.Models.Order> Order { get; set; }
     }
 }

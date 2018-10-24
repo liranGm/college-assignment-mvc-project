@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using college_assignment_mvc_project.Models;
 
 namespace college_assignment_mvc_project.Migrations
 {
     [DbContext(typeof(college_assignment_mvc_projectContext))]
-    partial class college_assignment_mvc_projectContextModelSnapshot : ModelSnapshot
+    [Migration("20181024185504_AddedOrdersController")]
+    partial class AddedOrdersController
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
