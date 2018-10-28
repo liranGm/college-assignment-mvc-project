@@ -29,13 +29,6 @@ namespace college_assignment_mvc_project.Controllers
             return View();
         }
 
-        public IActionResult SignUp()
-        {
-            ViewData["Message"] = "Your sign up page.";
-
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();
