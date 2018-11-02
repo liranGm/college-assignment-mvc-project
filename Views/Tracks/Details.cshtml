@@ -60,6 +60,25 @@
         </dd>
     </dl>
 </div>
+
+<div id="myMap" style="position:relative;width:100%;height:500px;"></div>
+
+@section scripts {
+    <script type='text/javascript'
+            src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap'
+            async defer></script>
+    <script type='text/javascript'>
+        function GetMap() {
+            renderRequestsMap("myMap", {
+                lat: 31.771959,
+                long: 35.217018,
+            });
+        };
+    </script>
+}
+
+<br/>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.TrackID">Edit</a> |
     <a asp-action="Index">Back to List</a>
