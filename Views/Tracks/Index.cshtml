@@ -10,73 +10,47 @@
         <hr>
         <h1 class="tagline">The Best Trips, Just For You</h1>
         <hr>
-        <p>introduce the visitor to the business using clear, informative text. </p>
-        <p></p>Use well-targeted keywords within your sentences to make sure search engines can find the business.</p>
+        <p>Find tracks & guides just for you! and start enjoying Earth </p>
         <br>
     </div>
 </div>
 
 <br />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Difficulty)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Includes_Water)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Circular)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrackLenght)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Guide)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Difficulty)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Includes_Water)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Circular)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Duration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrackLenght)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Guide.GuideID)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="bs-example">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner">
+
+
+            @{int i = 0;}
+            @foreach (var item in Model)
+            {
+                if (i == 0)
+                {
+                    <div class="item active">
+                       <a asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
+                       <span>@item.Location</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="item">
+                        <a asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
+                        <span>@item.Location</span>
+                    </div>
+                }
+
+                i++;
+            }
+
+        </div>
+
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿@model college_assignment_mvc_project.Models.Track
+
+@{
+    ViewData["Title"] = "Info";
+}
+
+<h2>Track Info</h2>
+
+<hr />
+
+<div class="row">
+    <div class="signup-form">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" readonly="@(true)" />
+
+        <label asp-for="Location" class="control-label"></label>
+        <input asp-for="Location" class="form-control" readonly="@(true)" />
+
+        <label asp-for="Difficulty" class="control-label"></label>
+        <input asp-for="Difficulty" class="form-control" readonly="@(true)" />
+
+        <label asp-for="Includes_Water" class="control-label"></label>
+        <input asp-for="Includes_Water" class="form-control" disabled />
+
+        <label asp-for="Circular" class="control-label"></label>
+        <input asp-for="Circular" class="form-control" disabled />
+
+        <label asp-for="Duration" class="control-label"></label>
+        <input asp-for="Duration" class="form-control" readonly="@(true)" />
+
+        <label asp-for="TrackLenght" class="control-label"></label>
+        <input asp-for="TrackLenght" class="form-control" readonly="@(true)" />
+
+        <label asp-for="Guide" class="control-label"></label>
+        <input asp-for="Guide" class="form-control" readonly="@(true)" />
+
+
+    </div>
+</div>

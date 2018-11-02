@@ -85,6 +85,22 @@ namespace college_assignment_mvc_project.Controllers
             return View(track);
         }
 
+        public async Task<IActionResult> Info(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var track = await _context.Track.FindAsync(id);
+            if (track == null)
+            {
+                return NotFound();
+            }
+            ViewData["GuideId"] = new SelectList(_context.Set<Guide>(), "GuideID", "GuideID", track.GuideId);
+            return View(track);
+        }
+
         // POST: Tracks/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
