@@ -15,6 +15,14 @@ namespace college_assignment_mvc_project.Models
 
         public int Difficulty { get; set; }
 
+        public string Image { get; set; }
+
+        public int Lat { get; set; }
+
+        public int Long { get; set; }
+
+        public int Rate { get; set; }
+
         public bool Includes_Water { get; set; }
 
         public bool Circular { get; set; }

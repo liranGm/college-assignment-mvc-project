@@ -56,7 +56,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackID,Name,Location,Difficulty,Includes_Water,Circular,Duration,TrackLenght,GuideId")] Track track)
+        public async Task<IActionResult> Create([Bind("TrackID,Name,Location,Difficulty,Image,Lat,Long,Rate,Includes_Water,Circular,Duration,TrackLenght,GuideId")] Track track)
         {
             if (ModelState.IsValid)
             {
@@ -106,7 +106,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrackID,Name,Location,Difficulty,Includes_Water,Circular,Duration,TrackLenght,GuideId")] Track track)
+        public async Task<IActionResult> Edit(int id, [Bind("TrackID,Name,Location,Difficulty,Image,Lat,Long,Rate,Includes_Water,Circular,Duration,TrackLenght,GuideId")] Track track)
         {
             if (id != track.TrackID)
             {
