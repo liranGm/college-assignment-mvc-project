@@ -34,6 +34,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+.weather-header {
+    margin-left: 130px;
+}
+
 .form-control-login {
     height: 40px;
     box-shadow: none;
