@@ -20,12 +20,13 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("Role") != "ADMIN")
-            {
-                // TODO: Fix this tempData msg name to more relevant onegit s
-                TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
-                return RedirectToAction("Index", "Home");
-            }
+            // TODO: There is a bug, when new user registers to the site, we do insert him to DB but not logging him in. we must do it in Create Method in this controller
+            //if (HttpContext.Session.GetString("Role") != "ADMIN")
+            //{
+            //    // TODO: Fix this tempData msg name to more relevant onegit s
+            //    TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
+            //    return RedirectToAction("Index", "Home");
+            //}
             return View(await _context.User.ToListAsync());
         }
 
