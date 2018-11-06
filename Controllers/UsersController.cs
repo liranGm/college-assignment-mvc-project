@@ -62,12 +62,13 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber,Role")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber")] User user)
         {
             if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
             {
                 if (ModelState.IsValid)
                 {
+                    user.Role = UserAuthorization.USER;
                     _context.Add(user);
                     await _context.SaveChangesAsync();
 
@@ -99,12 +100,14 @@ namespace college_assignment_mvc_project.Controllers
                 return NotFound();
             }
             
-            if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected" || HttpContext.Session.GetString("UserFirstName") != user.FirstName)
+            if (HttpContext.Session.GetString("IsUserLoggedIn") == "UserConnected" 
+                && (HttpContext.Session.GetString("UserFirstName") == user.FirstName 
+                    || HttpContext.Session.GetString("Role") == "ADMIN"))
             {
-                TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
-                return RedirectToAction("Index", "Home");
+                return View(user);
             }
-            return View(user);
+            TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: Users/Edit/5
@@ -112,7 +115,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber,Role")] User user)
         {
             if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected")
             {

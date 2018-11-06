@@ -40,8 +40,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control"></select>
-                <span asp-validation-for="Role" class="text-danger"></span>
+                <br />
+                <select asp-for="Role" asp-items="Html.GetEnumSelectList<UserAuthorization>()"></select>
+                <span asp-validation-for="Role" class="dropdown-menu"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
