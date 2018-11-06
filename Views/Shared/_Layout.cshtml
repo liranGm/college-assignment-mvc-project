@@ -1,6 +1,8 @@
 ﻿@{
     @using Microsoft.AspNetCore.Http;
     var userFirstName = Context.Session.GetString("UserFirstName");
+    var role = Context.Session.GetString("Role");
+    var userConnected = Context.Session.GetString("IsUserLoggedIn");
 }
 
 
@@ -60,8 +62,22 @@
                         </div>
                     </form>
 
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    <li><a asp-area="" asp-controller="Users" asp-action="Create"><span class="glyphicon glyphicon-user"></span> Sign In</a></li>
+                    @if (userConnected == "UserNotConnected")
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a asp-area="" asp-controller="Users" asp-action="Create"><span class="glyphicon glyphicon-user"></span> Sign In</a></li>
+                    }
+                    else if (userConnected == "UserConnected")
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Logout">
+                            <span class="glyphicon glyphicon-user"></span> Logout</a>
+                        </li>
+                    }
+
+                    @if (role == "ADMIN")
+                    {
+                    <li><a asp-area="" asp-controller="Users" asp-action="Index"><span class="glyphicon glyphicon-user"></span>Users Administration</a></li>
+                    }
                 </ul>
             </div>
         </div>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using college_assignment_mvc_project.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace college_assignment_mvc_project.Controllers
 {
@@ -13,6 +14,11 @@ namespace college_assignment_mvc_project.Controllers
     {
         private readonly college_assignment_mvc_projectContext _context;
 
+        private IActionResult redirect_to_login_page()
+        {
+            TempData["must-login-msg"] = "<script>alert('Must log in to see this page');</script>";
+            return RedirectToAction("Login", "Home");
+        }
         public GuidesController(college_assignment_mvc_projectContext context)
         {
             _context = context;
@@ -21,12 +27,22 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Guides
         public async Task<IActionResult> Index()
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return redirect_to_login_page();
             return View(await _context.Guide.ToListAsync());
         }
 
         // GET: Guides/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return redirect_to_login_page();
+            else if (!(AuthorizationMiddleware.IsGuideAuthorized(HttpContext.Session) 
+                        || AuthorizationMiddleware.IsAdminAuthorized(HttpContext.Session)))
+            {
+                TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null)
             {
                 return NotFound();

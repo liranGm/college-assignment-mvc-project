@@ -13,6 +13,12 @@ namespace college_assignment_mvc_project.Controllers
     {
         private readonly college_assignment_mvc_projectContext _context;
 
+        private IActionResult redirect_to_login_page()
+        {
+            TempData["must-login-msg"] = "<script>alert('Must log in to see this page');</script>";
+            return RedirectToAction("Login", "Home");
+        }
+
         public OrdersController(college_assignment_mvc_projectContext context)
         {
             _context = context;
@@ -21,6 +27,8 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return redirect_to_login_page();
             var college_assignment_mvc_projectContext = _context.Order.Include(o => o.customer);
             return View(await college_assignment_mvc_projectContext.ToListAsync());
         }

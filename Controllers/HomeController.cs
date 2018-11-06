@@ -22,7 +22,10 @@ namespace college_assignment_mvc_project.Controllers
         public IActionResult Index()
         {
             if (HttpContext.Session.GetString("UserFirstName") == null)
+            {
                 HttpContext.Session.SetString("UserFirstName", "Guest");
+                HttpContext.Session.SetString("IsUserLoggedIn", "UserNotConnected");
+            }
             return View();
         }
 
@@ -38,6 +41,11 @@ namespace college_assignment_mvc_project.Controllers
             ViewData["Message"] = "Your login page.";
 
             return View();
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Privacy()
@@ -64,6 +72,8 @@ namespace college_assignment_mvc_project.Controllers
                 if (usr != null)
                 {
                     HttpContext.Session.SetString("UserFirstName", usr.FirstName);
+                    HttpContext.Session.SetString("Role", usr.Role.ToString());
+                    HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
                 }
 
                 return RedirectToAction("Index", "Home");

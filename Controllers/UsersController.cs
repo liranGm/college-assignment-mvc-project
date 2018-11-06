@@ -20,26 +20,40 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            HttpContext.Session.SetString("UserFirstName", "Guest");
+            if (HttpContext.Session.GetString("Role") != "ADMIN")
+            {
+                // TODO: Fix this tempData msg name to more relevant onegit s
+                TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
+                return RedirectToAction("Index", "Home");
+            }
             return View(await _context.User.ToListAsync());
         }
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("Role") != "ADMIN")
             {
-                return NotFound();
+                TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
+                return RedirectToAction("Index", "Home");
             }
-
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserID == id);
-            if (user == null)
+            else
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
 
-            return View(user);
+                }
+
+                var user = await _context.User
+                    .FirstOrDefaultAsync(m => m.UserID == id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return View(user);
+            }
         }
 
         // GET: Users/Create
@@ -53,7 +67,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber,Role")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -72,10 +86,16 @@ namespace college_assignment_mvc_project.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.User.FindAsync(id);            
             if (user == null)
             {
                 return NotFound();
+            }
+            
+            if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected" || HttpContext.Session.GetString("UserFirstName") != user.FirstName)
+            {
+                TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
+                return RedirectToAction("Index", "Home");
             }
             return View(user);
         }
@@ -87,6 +107,11 @@ namespace college_assignment_mvc_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber")] User user)
         {
+            if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected")
+            {
+                TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
+                return RedirectToAction("Index", "Home");
+            }
             if (id != user.UserID)
             {
                 return NotFound();
@@ -118,6 +143,7 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -129,12 +155,23 @@ namespace college_assignment_mvc_project.Controllers
             {
                 return NotFound();
             }
+            if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected" || HttpContext.Session.GetString("UserFirstName") != user.FirstName)
+            {
+                TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
+                return RedirectToAction("Index", "Home");
+            }
 
             return View(user);
         }
 
         public ActionResult Login([Bind(include: "Email,Password")] User user)
         {
+            if (HttpContext.Session.GetString("IsUserLoggedIn") == "UserConnected" )
+            {
+                TempData["msg"] = "<script>alert('OOps.. You must log out before sign in again..');</script>";
+                return RedirectToAction("Index", "Home");
+            }
+
             User usr = null;
             var password = user.Password;
             var email = user.Email;
