@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using college_assignment_mvc_project.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace college_assignment_mvc_project.Controllers
 {
@@ -21,6 +20,7 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            HttpContext.Session.SetString("UserFirstName", "Guest");
             return View(await _context.User.ToListAsync());
         }
 
@@ -131,6 +131,28 @@ namespace college_assignment_mvc_project.Controllers
             }
 
             return View(user);
+        }
+
+        public ActionResult Login([Bind(include: "Email,Password")] User user)
+        {
+            User usr = null;
+            var password = user.Password;
+            var email = user.Email;
+
+            try
+            {
+                usr = _context.User.Single(u => u.Email.Equals(email) && u.Password.Equals(password));
+                if (usr != null)
+                {
+                    HttpContext.Session.SetString("UserFirstName", usr.FirstName);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("FailedLogin", "Users");
+            }
         }
 
         // POST: Users/Delete/5

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using college_assignment_mvc_project.Models;
+using Microsoft.AspNetCore.Session;
 
 namespace college_assignment_mvc_project
 {
@@ -38,6 +39,8 @@ namespace college_assignment_mvc_project
 
             services.AddDbContext<college_assignment_mvc_projectContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("college_assignment_mvc_projectContext")));
+
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +59,7 @@ namespace college_assignment_mvc_project
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
