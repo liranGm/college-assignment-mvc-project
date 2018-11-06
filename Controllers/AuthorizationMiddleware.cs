@@ -33,5 +33,10 @@ namespace college_assignment_mvc_project.Controllers
                 //TempData["msg"] = "<script>alert('Must log in to see this page');</script>";
             return is_logged_in;
         }
+
+        public static bool IsItGuideOrAdmin(ISession Session)
+        {
+            return IsGuideAuthorized(Session) || IsAdminAuthorized(Session);
+        }
     }   
 }

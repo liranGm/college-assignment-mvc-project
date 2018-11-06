@@ -69,14 +69,20 @@
                     }
                     else if (userConnected == "UserConnected")
                     {
-                        <li><a asp-area="" asp-controller="Home" asp-action="Logout">
-                            <span class="glyphicon glyphicon-user"></span> Logout</a>
+                        <li>
+                            <a asp-area="" asp-controller="Home" asp-action="Logout">
+                                <span class="glyphicon glyphicon-user"></span> Logout
+                            </a>
                         </li>
                     }
 
                     @if (role == "ADMIN")
                     {
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index"><span class="glyphicon glyphicon-user"></span>Users Administration</a></li>
+                        <li><a asp-area="" asp-controller="Users" asp-action="Index"><span class="glyphicon glyphicon-user"></span>Users Administration</a></li>
+                    }
+                    @if (role == "ADMIN" || role =="GUIDE")
+                    {
+                        <li><a asp-area="" asp-controller="Tracks" asp-action="Create"><span class="glyphicon glyphicon-user"></span>Add New Track</a></li>
                     }
                 </ul>
             </div>

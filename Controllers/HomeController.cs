@@ -69,18 +69,22 @@ namespace college_assignment_mvc_project.Controllers
             try
             {
                 usr = _context.User.Single(u => u.Email.Equals(email) && u.Password.Equals(password));
-                if (usr != null)
-                {
-                    HttpContext.Session.SetString("UserFirstName", usr.FirstName);
-                    HttpContext.Session.SetString("Role", usr.Role.ToString());
-                    HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
-                }
+                HttpContext.Session.SetString("UserFirstName", usr.FirstName);
+                HttpContext.Session.SetString("Role", usr.Role.ToString());
+                HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
+               
 
                 return RedirectToAction("Index", "Home");
             }
-            catch (Exception)
+            //catch (ArgumentNullException)
+            //{
+                //should return to error page
+                //return RedirectToAction("Login", "Home");
+            //}
+            catch (InvalidOperationException)
             {
-                return RedirectToAction("FailedLogin", "Users");
+                TempData["login-failure"] = "could not log you in.. wrong email or password";
+                return RedirectToAction("Login", "Home");
             }
         }
     }

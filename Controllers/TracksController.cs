@@ -47,8 +47,20 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Tracks/Create
         public IActionResult Create()
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+            {
+                TempData["invalid-action"] = "<script>alert('OOps.. Must login to access this page');</script>";
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!AuthorizationMiddleware.IsItGuideOrAdmin(HttpContext.Session))
+            {
+                TempData["invalid-action"] = "<script>alert('OOps.. you dont have permissions to look at this page');</script>";
+                return RedirectToAction("Index", "Home");
+            }
+            var college_assignment_mvc_projectContext = _context.Track.Include(t => t.Guide);
             ViewData["GuideId"] = new SelectList(_context.Set<Guide>(), "GuideID", "GuideID");
             return View();
+
         }
 
         // POST: Tracks/Create

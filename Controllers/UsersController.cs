@@ -20,17 +20,14 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            // TODO: There is a bug, when new user registers to the site, we do insert him to DB but not logging him in. we must do it in Create Method in this controller
-            //if (HttpContext.Session.GetString("Role") != "ADMIN")
-            //{
-            //    // TODO: Fix this tempData msg name to more relevant onegit s
-            //    TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
-            //    return RedirectToAction("Index", "Home");
-            //}
-            return View(await _context.User.ToListAsync());
+            if (AuthorizationMiddleware.IsAdminAuthorized(HttpContext.Session) 
+                && AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return View(await _context.User.ToListAsync());
+            TempData["invalid-action"] = "<script>alert('Requested page is not available for you..');</script>";
+            return RedirectToAction("Index", "Home");
         }
 
-        // GET: Users/Details/5
+        // GET: Users/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (HttpContext.Session.GetString("Role") != "ADMIN")
@@ -41,18 +38,12 @@ namespace college_assignment_mvc_project.Controllers
             else
             {
                 if (id == null)
-                {
                     return NotFound();
 
-                }
-
-                var user = await _context.User
-                    .FirstOrDefaultAsync(m => m.UserID == id);
+                var user = await _context.User.FirstOrDefaultAsync(m => m.UserID == id);
                 if (user == null)
-                {
                     return NotFound();
-                }
-
+                
                 return View(user);
             }
         }
@@ -60,7 +51,10 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            return View();
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return View();
+            TempData["msg"] = "<script>alert('OOps.. You must log out before sign in ..');</script>";
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: Users/Create
@@ -70,13 +64,25 @@ namespace college_assignment_mvc_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber,Role")] User user)
         {
-            if (ModelState.IsValid)
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+
+                    // When you create a user we beleive he will automaticly sign in
+                    HttpContext.Session.SetString("UserFirstName", user.FirstName);
+                    HttpContext.Session.SetString("Role", user.Role.ToString());
+                    HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
+                }
+                else
+                    return View(user);
             }
-            return View(user);
+            else
+                TempData["invalid-registration-process"] = "<script>alert('Requested page is not available for you..');</script>";
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Users/Edit/5
@@ -156,41 +162,15 @@ namespace college_assignment_mvc_project.Controllers
             {
                 return NotFound();
             }
-            if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected" || HttpContext.Session.GetString("UserFirstName") != user.FirstName)
+            
+            if (!(AuthorizationMiddleware.IsAdminAuthorized(HttpContext.Session) 
+                && AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session)))
             {
-                TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
+                TempData["invalid-action"] = "<script>alert('OOps.. Only logged in admin can remove users');</script>";
                 return RedirectToAction("Index", "Home");
             }
 
             return View(user);
-        }
-
-        public ActionResult Login([Bind(include: "Email,Password")] User user)
-        {
-            if (HttpContext.Session.GetString("IsUserLoggedIn") == "UserConnected" )
-            {
-                TempData["msg"] = "<script>alert('OOps.. You must log out before sign in again..');</script>";
-                return RedirectToAction("Index", "Home");
-            }
-
-            User usr = null;
-            var password = user.Password;
-            var email = user.Email;
-
-            try
-            {
-                usr = _context.User.Single(u => u.Email.Equals(email) && u.Password.Equals(password));
-                if (usr != null)
-                {
-                    HttpContext.Session.SetString("UserFirstName", usr.FirstName);
-                }
-
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("FailedLogin", "Users");
-            }
         }
 
         // POST: Users/Delete/5

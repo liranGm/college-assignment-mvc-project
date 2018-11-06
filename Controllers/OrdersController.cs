@@ -55,6 +55,8 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return redirect_to_login_page();
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID");
             return View();
         }
@@ -66,6 +68,8 @@ namespace college_assignment_mvc_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderID,UserID,TotalPrice,PurchasedTrackID,SelectedGuildeID,PurchaseDate,TripsDate")] Order order)
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return redirect_to_login_page();
             if (ModelState.IsValid)
             {
                 _context.Add(order);

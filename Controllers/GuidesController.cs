@@ -16,7 +16,7 @@ namespace college_assignment_mvc_project.Controllers
 
         private IActionResult redirect_to_login_page()
         {
-            TempData["must-login-msg"] = "<script>alert('Must log in to see this page');</script>";
+            TempData["must-login-msg"] = "<p>Must log in to see this page</p>";
             return RedirectToAction("Login", "Home");
         }
         public GuidesController(college_assignment_mvc_projectContext context)
