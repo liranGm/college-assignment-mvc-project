@@ -2,6 +2,35 @@
     ViewData["Title"] = "Search";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<h3>Searching for the following string: @ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Location
+            </td>
+            <td>
+                Rate
+            </td>
+        </tr>
+
+        @foreach (var track in (IEnumerable<Track>)@ViewData["Result"])
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => track.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => track.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => track.Rate)
+                    </td>
+                </tr>
+            }
+        </thead>
+</table>

@@ -29,9 +29,13 @@ namespace college_assignment_mvc_project.Controllers
             return View();
         }
 
-        public IActionResult Search()
+        public IActionResult Search(string search)
         {
-            ViewData["Message"] = "Your search page.";
+            IQueryable<Track> result = null;
+            result = _context.Track.Where(t => t.Name.Contains(search));
+
+            ViewData["Message"] = search;
+            ViewData["Result"] = result;
 
             return View();
         }
