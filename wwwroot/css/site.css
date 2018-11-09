@@ -35,7 +35,8 @@ body {
 }
 
 .weather-header {
-    margin-left: 130px;
+    margin-top: 5px;
+    margin-left: 40px;
 }
 
 .form-control-login {
@@ -262,4 +263,8 @@ a:visited {
 
 .carousel .carousel-control {
     border: none;
+}
+
+.navbar-brand {
+    font-size: 14px;
 }
