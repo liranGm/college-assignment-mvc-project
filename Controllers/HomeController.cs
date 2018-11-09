@@ -34,7 +34,11 @@ namespace college_assignment_mvc_project.Controllers
         public IActionResult Search(string search)
         {
             IQueryable<Track> result = null;
-            result = _context.Track.Where(t => t.Name.Contains(search));
+            result = _context.Track
+                .Where(t => 
+                    t.Name.Contains(search) || 
+                    t.Location.Contains(search)
+                );
 
             ViewData["Message"] = search;
             ViewData["Result"] = result;

@@ -8,7 +8,7 @@
         <hr>
         <h1 class="tagline">@ViewData["Title"]</h1>
         <hr>
-        <p>Searching for the following tracks: @ViewData["Message"]</p>
+        <p>Searching for the following: @ViewData["Message"]</p>
         <br>
     </div>
 </div>
@@ -25,21 +25,27 @@
             <td>
                 Rate
             </td>
+            <td>
+                Image
+            </td>
         </tr>
 
         @foreach (var track in (IEnumerable<Track>)@ViewData["Result"])
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => track.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => track.Location)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => track.Rate)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => track.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => track.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(model => track.Rate)
+            </td>
+            <td>
+                <img src="@Html.DisplayFor(model => track.Image)" alt="IMAGES" />
+            </td>
+        </tr>
         }
     </thead>
 </table>

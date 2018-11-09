@@ -36,7 +36,7 @@ body {
 
 .weather-header {
     margin-top: 5px;
-    margin-left: 40px;
+    margin-left: 15px;
 }
 
 .form-control-login {
@@ -266,5 +266,5 @@ a:visited {
 }
 
 .navbar-brand {
-    font-size: 14px;
+    font-size: 15px;
 }
