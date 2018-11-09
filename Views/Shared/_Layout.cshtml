@@ -5,7 +5,6 @@
     var userConnected = Context.Session.GetString("IsUserLoggedIn");
 }
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,13 +33,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Tracks" asp-action="Index" class="navbar-brand">Trip Finder</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Trip Finder</a>
             </div>
 
             <b>Hello @userFirstName</b>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Tracks" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                 </ul>
 
                 <div class="navbar-header weather-header">
@@ -50,7 +49,7 @@
                     </script>
                 </div>
 
-                <ul class="nav navbar-nav navbar-right">
+                <div class="nav navbar-nav navbar-right">
                     <form class="navbar-form navbar-left" action="/Home/Search?search=search">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search Trip">
@@ -64,27 +63,27 @@
 
                     @if (userConnected == "UserNotConnected")
                     {
-                        <li><a asp-area="" asp-controller="Home" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        <li><a asp-area="" asp-controller="Users" asp-action="Create"><span class="glyphicon glyphicon-user"></span> Sign In</a></li>
+                        <span><a asp-area="" asp-controller="Home" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
+                        <span><a asp-area="" asp-controller="Users" asp-action="Create"><span class="glyphicon glyphicon-user"></span> Sign In</a></span>
                     }
                     else if (userConnected == "UserConnected")
                     {
-                        <li>
+                        <span>
                             <a asp-area="" asp-controller="Home" asp-action="Logout">
                                 <span class="glyphicon glyphicon-user"></span> Logout
                             </a>
-                        </li>
+                        </span>
                     }
 
                     @if (role == "ADMIN")
                     {
-                        <li><a asp-area="" asp-controller="Users" asp-action="Index"><span class="glyphicon glyphicon-user"></span>Users Administration</a></li>
+                        <span><a asp-area="" asp-controller="Users" asp-action="Index"><span class="glyphicon glyphicon-user"></span>Users Administration</a></span>
                     }
                     @if (role == "ADMIN" || role =="GUIDE")
                     {
-                        <li><a asp-area="" asp-controller="Tracks" asp-action="Create"><span class="glyphicon glyphicon-user"></span>Add New Track</a></li>
+                        <span><a asp-area="" asp-controller="Tracks" asp-action="Create"><span class="glyphicon glyphicon-user"></span>Add New Track</a></span>
                     }
-                </ul>
+                </div>
             </div>
         </div>
     </nav>

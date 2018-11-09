@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using college_assignment_mvc_project.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace college_assignment_mvc_project.Controllers
 {
@@ -19,14 +20,15 @@ namespace college_assignment_mvc_project.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (HttpContext.Session.GetString("UserFirstName") == null)
             {
                 HttpContext.Session.SetString("UserFirstName", "Guest");
                 HttpContext.Session.SetString("IsUserLoggedIn", "UserNotConnected");
             }
-            return View();
+            
+            return View(await _context.Track.ToListAsync());
         }
 
         public IActionResult Search(string search)

@@ -1,5 +1,52 @@
-﻿@{
+﻿@model IEnumerable<college_assignment_mvc_project.Models.Track>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 @Html.Raw(TempData["invalid-action"])
+
+<div class="row ">
+    <div class="col-lg-12 text-center">
+        <br><br><br>
+        <hr>
+        <h1 class="tagline">The Best Trips, Just For You</h1>
+        <hr>
+        <p>Find tracks & guides just for you! and start enjoying Earth </p>
+        <br>
+    </div>
+</div>
+
+<br />
+
+<div class="bs-example">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @{int i = 0;}
+            @foreach (var item in Model)
+            {
+                if (i == 0)
+                {
+                    <div class="item active">
+                        <a asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
+                        <span>@item.Location</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="item">
+                        <a asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
+                        <span>@item.Location</span>
+                    </div>
+                }
+                i++;
+            }
+        </div>
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+</div>
