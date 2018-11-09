@@ -27,21 +27,11 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Trip Finder</a>
+                <span class="navbar-brand">Hello @userFirstName</span>
             </div>
 
-            <b>Hello @userFirstName</b>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                </ul>
-
                 <div class="navbar-header weather-header">
                     <div id="openweathermap-widget-19"></div>
                     <script>
@@ -63,25 +53,48 @@
 
                     @if (userConnected == "UserNotConnected")
                     {
-                        <span><a asp-area="" asp-controller="Home" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span> Login</a></span>
-                        <span><a asp-area="" asp-controller="Users" asp-action="Create"><span class="glyphicon glyphicon-user"></span> Sign In</a></span>
+                        <span>
+                            <a asp-area="" asp-controller="Home" asp-action="Login" class="navbar-brand">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                Login
+                            </a>
+                        </span>
+                        <span>
+                            <a asp-area="" asp-controller="Users" asp-action="Create" class="navbar-brand">
+                                <span class="glyphicon glyphicon-user"></span> 
+                                Sign In
+                            </a>
+                        </span>
                     }
+
                     else if (userConnected == "UserConnected")
                     {
                         <span>
-                            <a asp-area="" asp-controller="Home" asp-action="Logout">
-                                <span class="glyphicon glyphicon-user"></span> Logout
+                            <a asp-area="" asp-controller="Home" asp-action="Logout" class="navbar-brand">
+                                <span class="glyphicon glyphicon-user"></span> 
+                                Logout
                             </a>
                         </span>
                     }
 
                     @if (role == "ADMIN")
                     {
-                        <span><a asp-area="" asp-controller="Users" asp-action="Index"><span class="glyphicon glyphicon-user"></span>Users Administration</a></span>
+                        <span>
+                            <a asp-area="" asp-controller="Users" asp-action="Index" class="navbar-brand">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Users Administration
+                            </a>
+                        </span>
                     }
-                    @if (role == "ADMIN" || role =="GUIDE")
+
+                    @if (role == "ADMIN" || role == "GUIDE")
                     {
-                        <span><a asp-area="" asp-controller="Tracks" asp-action="Create"><span class="glyphicon glyphicon-user"></span>Add New Track</a></span>
+                        <span>
+                            <a asp-area="" asp-controller="Tracks" asp-action="Create" class="navbar-brand">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Add New Track
+                            </a>
+                        </span>
                     }
                 </div>
             </div>
