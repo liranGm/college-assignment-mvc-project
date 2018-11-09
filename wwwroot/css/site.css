@@ -268,3 +268,7 @@ a:visited {
 .navbar-brand {
     font-size: 15px;
 }
+
+.options {
+    color: black;
+}
