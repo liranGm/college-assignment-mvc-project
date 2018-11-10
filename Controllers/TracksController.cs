@@ -41,6 +41,8 @@ namespace college_assignment_mvc_project.Controllers
                 return NotFound();
             }
 
+            ViewData["TrackID"] = track.TrackID;
+
             var guide = _context.Guide.FirstOrDefault(g => g.GuideID == track.GuideId);
             ViewData["GuideName"] = guide.FirstName + " " + guide.LastName;
             ViewData["GuideRate"] = guide.Rate;

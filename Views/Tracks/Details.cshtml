@@ -72,12 +72,6 @@
         <dd>
             @Html.DisplayFor(model => model.TrackLenght)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Guide)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Guide.GuideID)
-        </dd>
 
         <dt>
             Guide Name
@@ -93,6 +87,9 @@
         </dd>
     </dl>
 </div>
+
+<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <input type="button" value="Order" class="btn btn-success btn-lg btn-block" onclick="location.href='@Url.Action("Create", "Orders")'" />
 
