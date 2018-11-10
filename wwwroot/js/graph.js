@@ -12,7 +12,6 @@ function createPopularGuidesGraph(data) {
         d.label = d.guideName;
         d.value = d.timesOrderd;
     });
-
     var vis = d3.select("#most-ordered-guides")
         .append("svg:svg")
         .data([data])
@@ -33,7 +32,8 @@ function createPopularGuidesGraph(data) {
         .append("svg:g")
         .attr("class", "slice");
 
-    arcs.append("svg:path")
+
+     arcs.append("svg:path")
         .attr("fill", function (d, i) { return color(i); })
         .attr("d", arc);
 
@@ -43,6 +43,11 @@ function createPopularGuidesGraph(data) {
             d.outerRadius = r;
             return "translate(" + arc.centroid(d) + ")";
         })
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '1em')
+        .text(function (data) {
+            return data.data.guideName;
+        });
 }
 
 function createPopularTripsGraph(data) {
