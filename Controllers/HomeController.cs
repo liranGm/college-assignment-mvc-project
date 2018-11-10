@@ -46,6 +46,13 @@ namespace college_assignment_mvc_project.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Cart()
+        {
+            var userID = Int32.Parse(HttpContext.Session.GetString("UserID"));
+
+            return View(await _context.Order.Where(o => o.UserID == userID).ToListAsync());
+        }
+
         public IActionResult Login()
         {
             ViewData["Message"] = "Your login page.";

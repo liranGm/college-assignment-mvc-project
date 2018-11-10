@@ -41,7 +41,7 @@
 
                 <div class="nav navbar-nav navbar-right">
                     <form class="navbar-form navbar-left" action="/Home/Search?search=search">
-                        <div class="input-group">
+                        <div class="input-group search">
                             <input type="text" class="form-control" name="search" placeholder="Search Trip or Location">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
@@ -69,6 +69,13 @@
 
                     else if (userConnected == "UserConnected")
                     {
+
+                        <span>
+                            <a asp-area="" asp-controller="Home" asp-action="Cart" class="navbar-brand">
+                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                            </a>
+                        </span>
+
                         <span>
                             <a asp-area="" asp-controller="Home" asp-action="Logout" class="navbar-brand">
                                 <span class="glyphicon glyphicon-user"></span>
