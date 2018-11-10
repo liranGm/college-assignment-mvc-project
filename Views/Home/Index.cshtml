@@ -27,7 +27,7 @@
                 if (i == 0)
                 {
                     <div class="item active">
-                        <img src="@item.Image" alt="IMAGES" />
+                        <img class="track-image" src="@item.Image" alt="IMAGES" />
                         <a asp-controller="Tracks" asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
                         <span>@item.Location</span>
                     </div>
@@ -35,7 +35,7 @@
                 else
                 {
                     <div class="item">
-                        <img src="@item.Image" alt="IMAGES" />
+                        <img class="track-image" src="@item.Image" alt="IMAGES" />
                         <a asp-controller="Tracks" asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
                         <span>@item.Location</span>
                     </div>

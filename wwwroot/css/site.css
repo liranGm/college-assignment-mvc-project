@@ -343,7 +343,9 @@ a:visited {
     color: black;
 }
 
-.notfound a{
-    
+.track-image {
+    width: 300px;
+    height: 150px;
+    border: 1px solid black;
 }
 
