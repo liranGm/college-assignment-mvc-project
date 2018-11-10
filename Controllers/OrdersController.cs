@@ -36,6 +36,8 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+                return redirect_to_login_page();
             if (id == null)
             {
                 return NotFound();
@@ -73,7 +75,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderID,UserID,TotalPrice,PurchasedTrackID,SelectedGuildeID,PurchaseDate,TripsDate")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderID,UserID,TotalPrice,PurchasedTrackID,SelectedGuildeID")] Order order)
         {
             if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
                 return redirect_to_login_page();

@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Details";
+    @using Microsoft.AspNetCore.Http;
+    var userConnected = Context.Session.GetString("IsUserLoggedIn");
 }
 
 <div class="row ">
@@ -90,7 +92,10 @@
 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<input type="button" value="Order" class="btn btn-success btn-lg btn-block" onclick="location.href='@Url.Action("Create", "Orders")'" />
+@if (userConnected == "UserConnected")
+{
+    <input type="button" value="Order" class="btn btn-success btn-lg btn-block" onclick="location.href='@Url.Action("Create", "Orders")'" />
+}
 
 <br />
 
@@ -111,7 +116,9 @@
 }
 
 <br />
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.TrackID">Edit</a>
-</div>
+@if (userConnected == "UserConnected")
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.TrackID">Edit</a>
+    </div>
+}

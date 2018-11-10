@@ -94,6 +94,15 @@ namespace college_assignment_mvc_project.Controllers
         // GET: Tracks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+            {
+                return RedirectToAction("UnauthorizedAction", "Home");
+            }
+            else if (!AuthorizationMiddleware.IsItGuideOrAdmin(HttpContext.Session))
+            {
+                return RedirectToAction("UnauthorizedAction", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();

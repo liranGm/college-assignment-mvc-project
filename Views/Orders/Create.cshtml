@@ -21,23 +21,13 @@
         </div>
         <div class="form-group">
             <label asp-for="PurchasedTrackID" class="control-label"></label>
-            <input asp-for="PurchasedTrackID" class="form-control" value="@ViewData["TrackID"]" />
+            <input asp-for="PurchasedTrackID" class="form-control" value="@ViewData["TrackID"]" readonly/>
             <span asp-validation-for="PurchasedTrackID" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="SelectedGuildeID" class="control-label"></label>
-            <input asp-for="SelectedGuildeID" class="form-control" value="@ViewData["GuideID"]" />
+            <input asp-for="SelectedGuildeID" class="form-control" value="@ViewData["GuideID"]" readonly/>
             <span asp-validation-for="SelectedGuildeID" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="PurchaseDate" class="control-label"></label>
-            <input asp-for="PurchaseDate" class="form-control" />
-            <span asp-validation-for="PurchaseDate" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="TripsDate" class="control-label"></label>
-            <input asp-for="TripsDate" class="form-control" />
-            <span asp-validation-for="TripsDate" class="text-danger"></span>
         </div>
         <div class="form-group">
             <input type="submit" value="Order" class="btn btn-success btn-lg btn-block" />
