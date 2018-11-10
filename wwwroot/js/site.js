@@ -20,10 +20,12 @@ function createBingMap(divIdForMap) {
 }
 
 function addRequestPins(bingMap, requestData) {
+    console.log(requestData.lat);
+    console.log(requestData.long);
     bingMap.setView(
         {
-            center: new Microsoft.Maps.Location(data.lat, data.long),
-            zoom: 15
+            center: new Microsoft.Maps.Location(requestData.lat, requestData.long),
+            zoom: 10
         }
     );
 }
