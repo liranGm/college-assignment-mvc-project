@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Cart";
+    Dictionary<int, string> trackName = (Dictionary<int, string>)ViewData["dictionary"];
 }
 
 <div class="row">
@@ -23,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.SelectedGuildeID)
             </th>
+            <th>
+               Name Track
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -32,7 +36,7 @@
         {
         <tr>
             <td>
-                <a asp-controller="Tracks" asp-action="Details" asp-route-id="@item.PurchasedTrackID">
+                <a asp-controller="Tracks" asp-action="Info" asp-route-id="@item.PurchasedTrackID">
                     @Html.DisplayFor(modelItem => item.PurchasedTrackID)
                 </a>
             </td>
@@ -40,6 +44,9 @@
                 <a asp-controller="Guides" asp-action="Details" asp-route-id="@item.SelectedGuildeID">
                     @Html.DisplayFor(modelItem => item.SelectedGuildeID)
                 </a>
+            </td>
+            <td>
+                @trackName[item.PurchasedTrackID]
             </td>
         </tr>
         }

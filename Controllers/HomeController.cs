@@ -56,8 +56,41 @@ namespace college_assignment_mvc_project.Controllers
         {
             var userID = Int32.Parse(HttpContext.Session.GetString("UserID"));
 
+        
+            List<Track> allTracksInArea = new List<Track>();
+            int ordersLength = _context.Order.Count();
+            if (ordersLength == 0 || !AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+            {
+                
+            }
+            else
+            {
+                var userID2 = Int32.Parse(HttpContext.Session.GetString("UserID"));
+                var track_for_this_user = _context.Order.Where(user => user.UserID == userID2).Select(order => order.PurchasedTrackID).ToList();
+
+               // List<string> selectedAreaList = new List<string>();
+
+                Dictionary<int, string> dictionary = new Dictionary<int, string>();
+
+                foreach (var trackID in track_for_this_user)
+                {
+                    string area = "";
+                    try
+                    {
+                        area = _context.Track.Where(x => x.TrackID == trackID).First().Name;
+                        dictionary.Add(trackID, area);
+                    }
+                    catch
+                    {
+                    }
+       
+                }
+                ViewData["dictionary"] = dictionary;
+            }
+
             return View(await _context.Order.Where(o => o.UserID == userID).ToListAsync());
         }
+
 
         public IActionResult Login()
         {

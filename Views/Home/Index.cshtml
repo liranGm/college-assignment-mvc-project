@@ -46,6 +46,13 @@
                 }
                 i++;
             }
+
+
+
+
+
+
+
         </div>
         <a class="carousel-control left" href="#myCarousel" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left"></span>
@@ -53,22 +60,31 @@
         <a class="carousel-control right" href="#myCarousel" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right"></span>
         </a>
+
     </div>
 </div>
 @if (userConnected == "UserConnected" && recomendedTrack != null)
 {
-    <h3>Recomended Track For You, @userFirstName</h3>
-        <tr>
-            <td>
-                <a asp-controller="Tracks" asp-action="Details" asp-route-id="@recomendedTrack.TrackID">
-                    <h4>@recomendedTrack.Name</h4>
-                </a>
-            </td>
-            <td>
-                @recomendedTrack.Location
-            </td>
-            <td>
-                <img src="@recomendedTrack.Image" alt="IMAGES" />
-            </td>
-        </tr>
+    <div class="bs-example">
+        <div id="myCarousel" class="carousel" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="item active">
+
+                        <h3 class="carousel">Recomended Track For You, @userFirstName</h3>
+                        <tr>
+                            <td>
+                                <a asp-controller="Tracks" asp-action="Details" asp-route-id="@recomendedTrack.TrackID">
+                                    <h4>@recomendedTrack.Name</h4>
+                                </a>
+                            </td>
+                            <td>
+                                <img class="track-image" src="@recomendedTrack.Image" alt="IMAGES" />
+                            </td>
+                        </tr>
+                        
+                 </div>
+             </div>
+         </div>
+     </div>
+
 }

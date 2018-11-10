@@ -33,7 +33,9 @@
 
         <label asp-for="Guide" class="control-label"></label>
         <input asp-for="Guide" class="form-control" readonly="@(true)" />
+        <br />
 
+        <img class="track-image" src="@Html.DisplayFor(model => model.Image)" alt="IMAGES" />
 
     </div>
 </div>
