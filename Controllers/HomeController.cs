@@ -102,14 +102,8 @@ namespace college_assignment_mvc_project.Controllers
                 HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
                 HttpContext.Session.SetString("UserID", usr.UserID.ToString());
 
-
                 return RedirectToAction("Index", "Home");
             }
-            //catch (ArgumentNullException)
-            //{
-                //should return to error page
-                //return RedirectToAction("Login", "Home");
-            //}
             catch (InvalidOperationException)
             {
                 TempData["login-failure"] = "login-failure";
@@ -131,8 +125,6 @@ namespace college_assignment_mvc_project.Controllers
             else
             {
                 int userID = Int32.Parse(HttpContext.Session.GetString("UserID"));
-
-                // Keys 
                 var track_for_this_user = _context.Order.Where(user => user.UserID == userID).Select(order => order.PurchasedTrackID).ToList();
 
                 List<string> selectedAreaList = new List<string>();
@@ -145,7 +137,6 @@ namespace college_assignment_mvc_project.Controllers
                     }
                     catch
                     {
-
                     }
                     selectedAreaList.Add(area);
                 }
@@ -153,10 +144,8 @@ namespace college_assignment_mvc_project.Controllers
                 string[] selectedArea = selectedAreaList.ToArray();
 
                 if (selectedArea.Length == 0)
-                {
                     return new Track();
-                    //selectedTrack = db.Movies.OrderBy(r => Guid.NewGuid()).First();
-                }
+
                 else if (selectedArea.Distinct().Count() == 1)
                 {
                     try
@@ -215,9 +204,6 @@ namespace college_assignment_mvc_project.Controllers
                         allTracksInArea.Add(track);
 
                     selectedTrack = allTracksInArea[rnd.Next(allTracksInArea.Count)];
-                    //allTracksInArea.Add(_context.Track.First(x => get_selected_area_value(x.Location) == selectedIndex));
-
-                    //selectedTrack = allTracksInArea[rnd.Next(allTracksInArea.Count)];
                 }
             }
             

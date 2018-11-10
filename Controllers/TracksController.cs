@@ -119,7 +119,7 @@ namespace college_assignment_mvc_project.Controllers
                 FullName = g.FirstName + " " + g.LastName
             }).ToList(), "GuideID", "FullName");
 
-            return View();
+            return View(track);
         }
 
         public async Task<IActionResult> Info(int? id)
