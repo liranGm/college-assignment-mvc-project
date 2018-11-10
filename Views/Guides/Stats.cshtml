@@ -1,0 +1,55 @@
+﻿@model college_assignment_mvc_project.Models.Guide
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="page-title">@ViewBag.Title</h2>
+<p>Guides Statistics</p>
+
+<style>
+    .bar {
+        fill: steelblue;
+        transition: fill 3s;
+    }
+
+        .bar:hover {
+            fill: brown;
+        }
+
+    .axis {
+        font: 10px sans-serif;
+    }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+</style>
+<section id="most-ordered-guides">
+    <h3>Most Ordered Guides</h3>
+</section>
+
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="~/js/graph.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<svg id="barChart"></svg>
+
+<script>
+    // print JSON data
+    $.ajax({
+        url: '/Guides/GetGuidesStats',
+        success: function (result) {
+            var usersData = result;
+            console.log(usersData);
+            createPopularGuidesGraph(usersData);
+        },
+        error: function (hxr, status, err) {
+            console.log('status: ' + status + ', error: ' + err);
+        }
+    });
+
+</script>

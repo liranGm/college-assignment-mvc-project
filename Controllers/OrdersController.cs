@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using college_assignment_mvc_project.Models;
+using college_assignment_mvc_project.Models.ViewModels;
 
 namespace college_assignment_mvc_project.Controllers
 {
@@ -165,6 +166,41 @@ namespace college_assignment_mvc_project.Controllers
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.OrderID == id);
+        }
+
+        public IActionResult GetAllOrdersData()
+        {
+            var orders = (from order in _context.Order
+                          join track in _context.Track on order.PurchasedTrackID equals track.TrackID
+                          select new OrderdTrip
+                          {
+                              TimesOrderd = 1,
+                              TripName = track.Name,
+                              TrackID = track.TrackID
+                          }).ToList();
+
+            var ordered_tracks = new Dictionary<int, OrderdTrip>();
+            var tracks_ids = (from track in _context.Track select track.TrackID).ToList();
+
+            foreach (var track_id in tracks_ids)
+                ordered_tracks[track_id] = new OrderdTrip { TrackID = track_id, TimesOrderd = 0, TripName = "" };
+
+            foreach (var order in orders)
+            {
+                ordered_tracks[order.TrackID].TimesOrderd += 1;
+                ordered_tracks[order.TrackID].TripName = order.TripName;
+            }
+
+            List<OrderdTrip> orderd_trips = new List<OrderdTrip>(ordered_tracks.Count);
+            foreach (var ordered_trip in ordered_tracks.Values)
+                orderd_trips.Add(ordered_trip);
+
+            return Json(orderd_trips);
+        }
+
+        public IActionResult Stats()
+        {
+            return View();
         }
     }
 }

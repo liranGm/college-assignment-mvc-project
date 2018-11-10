@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using college_assignment_mvc_project.Models;
 using Microsoft.AspNetCore.Http;
+using college_assignment_mvc_project.Models.ViewModels;
 
 namespace college_assignment_mvc_project.Controllers
 {
@@ -72,7 +73,7 @@ namespace college_assignment_mvc_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(guide);
+                _context.Guide.Add(guide);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -162,6 +163,44 @@ namespace college_assignment_mvc_project.Controllers
         private bool GuideExists(int id)
         {
             return _context.Guide.Any(e => e.GuideID == id);
+        }
+
+        public IActionResult GetGuidesStats()
+        {
+            var orders = (from order in _context.Order
+                          join guide in _context.Guide on order.SelectedGuildeID equals guide.GuideID
+                          select new OrderedGuide
+                          {
+                              TimesOrderd = 1,
+                              GuideName = guide.FirstName + " " + guide.LastName,
+                              GuideID = guide.GuideID
+                          }).ToList();
+
+            var ordered_guides = new Dictionary<int, OrderedGuide>();
+            var guides_ids = (from guide in _context.Guide select guide.GuideID).ToList();
+
+            foreach (var guide_id in guides_ids)
+                ordered_guides[guide_id] = new OrderedGuide { GuideID = guide_id, TimesOrderd = 0, GuideName = "" };
+
+            foreach (var order in orders)
+            {
+                ordered_guides[order.GuideID].TimesOrderd += 1;
+                ordered_guides[order.GuideID].GuideName = order.GuideName;
+            }
+
+            List<OrderedGuide> orderd_guides = new List<OrderedGuide>(ordered_guides.Count);
+            foreach (var ordered_guide in ordered_guides.Values)
+            {
+                if (ordered_guide.TimesOrderd > 0)
+                    orderd_guides.Add(ordered_guide);
+            }
+
+            return Json(orderd_guides);
+        }
+
+        public IActionResult Stats()
+        {
+            return View();
         }
     }
 }
