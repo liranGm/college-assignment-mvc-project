@@ -67,12 +67,14 @@ namespace college_assignment_mvc_project.Controllers
                 {
                     user.Role = UserAuthorization.USER;
                     _context.Add(user);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
 
                     // When you create a user we beleive he will automaticly sign in
-                    HttpContext.Session.SetString("UserFirstName", user.FirstName);
-                    HttpContext.Session.SetString("Role", user.Role.ToString());
+                    var usr = _context.User.Single(u => u.Email.Equals(user.Email) && u.Password.Equals(user.Password));
+                    HttpContext.Session.SetString("UserFirstName", usr.FirstName);
+                    HttpContext.Session.SetString("Role", usr.Role.ToString());
                     HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
+                    HttpContext.Session.SetString("UserID", usr.UserID.ToString());
                 }
                 else
                     return View(user);
@@ -121,19 +123,7 @@ namespace college_assignment_mvc_project.Controllers
                 try
                 {
                     _context.Update(user);
-                    await _context.SaveChangesAsync();
-
-                    var newGuide = new Guide
-                    {
-                        UserID = user.UserID,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Rate = 3,
-                        PricePerDay = 100,
-                    };
-
-                    _context.Guide.Add(newGuide);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -146,6 +136,44 @@ namespace college_assignment_mvc_project.Controllers
                         throw;
                     }
                 }
+                // Handle situation of create new guide
+                try
+                {
+                    var update_user_from_db = _context.User.Where(usr => usr.UserID == user.UserID).First();
+                    var guide_from_db = _context.Guide.Where(guide => guide.UserID == user.UserID).First();
+                    if (guide_from_db != null)
+                    {
+                        if (update_user_from_db.Role != UserAuthorization.GUIDE)
+                        {
+                            // Means we have to try to remove the guide from guides
+                            try
+                            {
+                                _context.Guide.Remove(guide_from_db);
+                                _context.SaveChanges();
+                            }
+                            catch
+                            {        
+                            }
+                        }
+                    }
+                    
+                }
+                catch
+                {
+                    // If we set user to be guide in the first time
+                    if (user.Role == UserAuthorization.GUIDE)
+                    {
+                        var newGuide = new Guide
+                        {
+                            UserID = user.UserID,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName
+                        };
+                        _context.Guide.Add(newGuide);
+                    }
+                }
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(user);

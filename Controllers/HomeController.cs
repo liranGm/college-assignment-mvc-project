@@ -87,7 +87,8 @@ namespace college_assignment_mvc_project.Controllers
                 HttpContext.Session.SetString("UserFirstName", usr.FirstName);
                 HttpContext.Session.SetString("Role", usr.Role.ToString());
                 HttpContext.Session.SetString("IsUserLoggedIn", "UserConnected");
-               
+                HttpContext.Session.SetString("UserID", usr.UserID.ToString());
+
 
                 return RedirectToAction("Index", "Home");
             }
