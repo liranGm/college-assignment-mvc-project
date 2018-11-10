@@ -37,7 +37,9 @@
                 </a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SelectedGuildeID)
+                <a asp-controller="Guides" asp-action="Details" asp-route-id="@item.SelectedGuildeID">
+                    @Html.DisplayFor(modelItem => item.SelectedGuildeID)
+                </a>
             </td>
         </tr>
         }
