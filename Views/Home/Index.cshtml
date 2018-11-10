@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<college_assignment_mvc_project.Models.Track>
 
 @{
+    @using Microsoft.AspNetCore.Http;
     ViewData["Title"] = "Home Page";
+    var recomendedTrack = (Track)ViewData["RecomendedTrack"];
+    var userConnected = Context.Session.GetString("IsUserLoggedIn");
+    var userFirstName = Context.Session.GetString("UserFirstName");
 }
 
 @Html.Raw(TempData["invalid-action"])
@@ -51,3 +55,35 @@
         </a>
     </div>
 </div>
+@if (userConnected == "UserConnected")
+{
+    <h3>Recomended Track For You, @userFirstName</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Location
+                </td>
+                <td>
+                    Image
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a asp-controller="Tracks" asp-action="Index" asp-route-id="@recomendedTrack.TrackID">
+                        <h4>@recomendedTrack.Name</h4>
+                    </a>
+                </td>
+                <td>
+                    @recomendedTrack.Location
+                </td>
+                <td>
+                    <img src="@recomendedTrack.Image" alt="IMAGES" />
+                </td>
+            </tr>
+        </thead>
+    </table>
+}

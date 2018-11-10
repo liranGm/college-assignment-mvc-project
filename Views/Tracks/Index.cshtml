@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<college_assignment_mvc_project.Models.Track>
 
-@{
-    ViewData["Title"] = "Index";
+@{ 
+    ViewData["Title"] = "Index";    
 }
 
 <div class="row ">
@@ -28,8 +28,8 @@
                 if (i == 0)
                 {
                     <div class="item active">
-                       <a asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
-                       <span>@item.Location</span>
+                        <a asp-action="Details" asp-route-id="@item.TrackID"><h4> @item.Name </h4></a>
+                        <span>@item.Location</span>
                     </div>
                 }
                 else

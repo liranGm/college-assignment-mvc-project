@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using college_assignment_mvc_project.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Accord.MachineLearning.Bayes;
 
 namespace college_assignment_mvc_project.Controllers
 {
@@ -27,8 +28,13 @@ namespace college_assignment_mvc_project.Controllers
                 HttpContext.Session.SetString("UserFirstName", "Guest");
                 HttpContext.Session.SetString("IsUserLoggedIn", "UserNotConnected");
             }
-            
+
+            Track recomended_track = RecommendTrack();
+            if (recomended_track.TrackID != 0)
+                ViewData["RecomendedTrack"] = recomended_track;
+
             return View(await _context.Track.ToListAsync());
+
         }
 
         public IActionResult Search(string search)
@@ -108,6 +114,128 @@ namespace college_assignment_mvc_project.Controllers
             {
                 TempData["login-failure"] = "login-failure";
                 return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public Track RecommendTrack()
+        {
+            Random rnd = new Random();
+            Track selectedTrack = null;
+            List<Track> allTracksInArea = new List<Track>();
+            int ordersLength = _context.Order.Count();
+
+            if (ordersLength == 0 || !AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
+            {
+                return new Track();
+            }
+            else
+            {
+                int userID = Int32.Parse(HttpContext.Session.GetString("UserID"));
+
+                // Keys 
+                var track_for_this_user = _context.Order.Where(user => user.UserID == userID).Select(order => order.PurchasedTrackID).ToList();
+
+                List<string> selectedAreaList = new List<string>();
+                foreach (var trackID in track_for_this_user)
+                {
+                    string area = "";
+                    try
+                    {
+                        area = _context.Track.Where(x => x.TrackID == trackID).First().Location;
+                    }
+                    catch
+                    {
+
+                    }
+                    selectedAreaList.Add(area);
+                }
+
+                string[] selectedArea = selectedAreaList.ToArray();
+
+                if (selectedArea.Length == 0)
+                {
+                    return new Track();
+                    //selectedTrack = db.Movies.OrderBy(r => Guid.NewGuid()).First();
+                }
+                else if (selectedArea.Distinct().Count() == 1)
+                {
+                    try
+                    {
+                        string area = selectedArea[0];
+                        allTracksInArea.Add(_context.Track.First(x => x.Location.Equals(area)));
+                        selectedTrack = allTracksInArea[rnd.Next(allTracksInArea.Count)];
+                    }
+                    catch
+                    {
+                        return new Track();
+                    }
+                }
+                else
+                {
+                    int[][] dataset = new int[selectedArea.Length][];
+
+                    Dictionary<int, int> mapper = new Dictionary<int, int>();
+                    Dictionary<int, int> mapperOpsite = new Dictionary<int, int>();
+
+                    int counter = 0;
+
+                    for (int genereIndex = 0; genereIndex < selectedArea.Length; genereIndex++)
+                    {
+                        dataset[genereIndex] = new int[1];
+
+                        if (!mapper.ContainsKey(get_selected_area_value(selectedArea[genereIndex])))
+                        {
+                            mapper[get_selected_area_value(selectedArea[genereIndex])] = counter;
+                            mapperOpsite[counter] = get_selected_area_value(selectedArea[genereIndex]);
+
+                            counter++;
+                        }
+
+                    }
+
+                    int[] mappedLabels = new int[selectedArea.Length];
+
+                    for (int i = 0; i < selectedArea.Length; i++)
+                    {
+                        mappedLabels[i] = mapper[get_selected_area_value(selectedArea[i])];
+                    }
+
+
+                    var learner = new NaiveBayesLearning();
+                    NaiveBayes nb = learner.Learn(dataset, mappedLabels);
+
+                    int[] prediction = new int[] { default(int) };
+
+                    int selectedGenereMapped = nb.Decide(prediction);
+
+                    int selectedIndex = mapperOpsite[selectedGenereMapped];
+
+                    var relevant_tracks = _context.Track.Where(x => get_selected_area_value(x.Location) == selectedIndex);
+                    foreach (var track in relevant_tracks)
+                        allTracksInArea.Add(track);
+
+                    selectedTrack = allTracksInArea[rnd.Next(allTracksInArea.Count)];
+                    //allTracksInArea.Add(_context.Track.First(x => get_selected_area_value(x.Location) == selectedIndex));
+
+                    //selectedTrack = allTracksInArea[rnd.Next(allTracksInArea.Count)];
+                }
+            }
+            
+            return selectedTrack;
+        }
+
+        protected int get_selected_area_value(string area)
+        {
+            switch (area)
+            {
+            case "Tzafon":
+                return 0;
+            case "Merkaz":
+                return 1;
+            case "Darom":
+                return 2;
+            default:
+                return -999;
             }
         }
     }
