@@ -9,6 +9,8 @@ namespace college_assignment_mvc_project.Models
     {
         public int GuideID { get; set; }
 
+        public int UserID { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

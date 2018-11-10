@@ -69,7 +69,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuideID,FirstName,LastName,PricePerDay,Rate")] Guide guide)
+        public async Task<IActionResult> Create([Bind("GuideID,UserID,FirstName,LastName,PricePerDay,Rate")] Guide guide)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace college_assignment_mvc_project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GuideID,FirstName,LastName,PricePerDay,Rate")] Guide guide)
+        public async Task<IActionResult> Edit(int id, [Bind("GuideID,UserID,FirstName,LastName,PricePerDay,Rate")] Guide guide)
         {
             if (id != guide.GuideID)
             {

@@ -133,6 +133,18 @@ namespace college_assignment_mvc_project.Controllers
                 {
                     _context.Update(user);
                     await _context.SaveChangesAsync();
+
+                    var newGuide = new Guide
+                    {
+                        UserID = user.UserID,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Rate = 3,
+                        PricePerDay = 100,
+                    };
+
+                    _context.Guide.Add(newGuide);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -182,7 +194,11 @@ namespace college_assignment_mvc_project.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.User.FindAsync(id);
+            var guide = await _context.Guide.FirstOrDefaultAsync(g => g.UserID == id);
+
             _context.User.Remove(user);
+            _context.Guide.Remove(guide);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
