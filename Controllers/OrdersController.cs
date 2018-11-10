@@ -83,9 +83,10 @@ namespace college_assignment_mvc_project.Controllers
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", order.UserID);
+
             return View(order);
         }
 
