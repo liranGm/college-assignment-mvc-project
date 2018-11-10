@@ -8,7 +8,7 @@
     <div class="col-lg-12 text-center">
         <br><br><br>
         <hr>
-        <h1>ההזמנות שלי</h1>
+        <h1>My Orders</h1>
         <hr>
         <br>
     </div>
@@ -32,7 +32,9 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PurchasedTrackID)
+                <a asp-controller="Tracks" asp-action="Details" asp-route-id="@Html.DisplayFor(modelItem => item.PurchasedTrackID)">
+                    @Html.DisplayFor(modelItem => item.PurchasedTrackID)
+                </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SelectedGuildeID)
