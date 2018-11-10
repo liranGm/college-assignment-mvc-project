@@ -17,9 +17,9 @@ namespace college_assignment_mvc_project.Models
 
         public string Image { get; set; }
 
-        public int Lat { get; set; }
+        public double Lat { get; set; }
 
-        public int Long { get; set; }
+        public double Long { get; set; }
 
         public int Rate { get; set; }
 
