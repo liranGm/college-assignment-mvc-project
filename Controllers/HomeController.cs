@@ -49,7 +49,6 @@ namespace college_assignment_mvc_project.Controllers
         public IActionResult Login()
         {
             ViewData["Message"] = "Your login page.";
-
             return View();
         }
         public IActionResult Logout()
@@ -67,6 +66,12 @@ namespace college_assignment_mvc_project.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        public IActionResult UnauthorizedAction()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -93,7 +98,7 @@ namespace college_assignment_mvc_project.Controllers
             //}
             catch (InvalidOperationException)
             {
-                TempData["login-failure"] = "could not log you in.. wrong email or password";
+                TempData["login-failure"] = "login-failure";
                 return RedirectToAction("Login", "Home");
             }
         }

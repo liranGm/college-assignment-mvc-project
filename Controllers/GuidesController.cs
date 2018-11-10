@@ -40,7 +40,6 @@ namespace college_assignment_mvc_project.Controllers
             else if (!(AuthorizationMiddleware.IsGuideAuthorized(HttpContext.Session) 
                         || AuthorizationMiddleware.IsAdminAuthorized(HttpContext.Session)))
             {
-                TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
                 return RedirectToAction("Index", "Home");
             }
             if (id == null)

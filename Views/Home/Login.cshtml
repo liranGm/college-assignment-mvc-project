@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Login";
+    var invalid_login_message = TempData["login-failure"] == null ? null : "<p class=login-failure>Your email or password is incorrect.Please check your email or password and try again.</p>";
 }
 
 <br><br><br>
@@ -8,8 +9,8 @@
     <form asp-action="Login" method="post">
         <h2>Login</h2>
         <p class="hint-text">Login to your existing account</p>
+        @Html.Raw(@invalid_login_message)
 
-        <p class="hint-text" style=" color:red">@Html.Raw(TempData["login-failure"])</p>
         <div class="form-group">
             <input type="email" class="form-control" name="email" placeholder="Email" required="required">
         </div>
@@ -23,3 +24,4 @@
         </div>
     </form>
 </div>
+

@@ -23,8 +23,7 @@ namespace college_assignment_mvc_project.Controllers
             if (AuthorizationMiddleware.IsAdminAuthorized(HttpContext.Session) 
                 && AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
                 return View(await _context.User.ToListAsync());
-            TempData["invalid-action"] = "<script>alert('Requested page is not available for you..');</script>";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("UnauthorizedAction", "Home");
         }
 
         // GET: Users/Details
@@ -32,8 +31,7 @@ namespace college_assignment_mvc_project.Controllers
         {
             if (HttpContext.Session.GetString("Role") != "ADMIN")
             {
-                TempData["msg"] = "<script>alert('Requested page is not available for you..');</script>";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("UnauthorizedAction", "Home");
             }
             else
             {
@@ -53,8 +51,7 @@ namespace college_assignment_mvc_project.Controllers
         {
             if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
                 return View();
-            TempData["msg"] = "<script>alert('OOps.. You must log out before sign in ..');</script>";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("UnauthorizedAction", "Home");
         }
 
         // POST: Users/Create
@@ -80,8 +77,6 @@ namespace college_assignment_mvc_project.Controllers
                 else
                     return View(user);
             }
-            else
-                TempData["invalid-registration-process"] = "<script>alert('Requested page is not available for you..');</script>";
 
             return RedirectToAction("Index", "Home");
         }
@@ -106,8 +101,7 @@ namespace college_assignment_mvc_project.Controllers
             {
                 return View(user);
             }
-            TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("UnauthorizedAction", "Home");
         }
 
         // POST: Users/Edit/5
@@ -117,11 +111,6 @@ namespace college_assignment_mvc_project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,PhoneNumber,Role")] User user)
         {
-            if (HttpContext.Session.GetString("IsUserLoggedIn") != "UserConnected")
-            {
-                TempData["msg"] = "<script>alert('OOps.. You must be logged in to edit your profile');</script>";
-                return RedirectToAction("Index", "Home");
-            }
             if (id != user.UserID)
             {
                 return NotFound();
@@ -181,8 +170,7 @@ namespace college_assignment_mvc_project.Controllers
             if (!(AuthorizationMiddleware.IsAdminAuthorized(HttpContext.Session) 
                 && AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session)))
             {
-                TempData["invalid-action"] = "<script>alert('OOps.. Only logged in admin can remove users');</script>";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("UnauthorizedAction", "Home");
             }
 
             return View(user);

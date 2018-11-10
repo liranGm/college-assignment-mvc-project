@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Unauthorized";
+    Layout = "";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Trip Finder</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <div id="notfound">
+        <div class="notfound-bg"></div>
+        <div class="notfound">
+            <div class="unathorize">
+                <h1>
+                    <span>Stop</span> <br>
+                    Unauthorized
+                </h1>
+            </div>
+            <a href="/">Back To Homepage</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
