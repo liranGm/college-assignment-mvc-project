@@ -43,11 +43,9 @@ namespace college_assignment_mvc_project.Controllers
 
             ViewData["TrackID"] = track.TrackID;
 
-            var guide = _context.Guide.FirstOrDefault(g => g.GuideID == track.GuideId);
-            ViewData["GuideName"] = guide.FirstName + " " + guide.LastName;
-            ViewData["GuideRate"] = guide.Rate;
+            ViewData["GuideName"] = track.Guide.FirstName + " " + track.Guide.LastName;
+            ViewData["GuideRate"] = track.Guide.Rate;
 
-            
             TempData["TrackID"] = track.TrackID;
             TempData["GuideID"] = track.GuideId;
 
@@ -66,7 +64,12 @@ namespace college_assignment_mvc_project.Controllers
                 return RedirectToAction("UnauthorizedAction", "Home");
             }
             var college_assignment_mvc_projectContext = _context.Track.Include(t => t.Guide);
-            ViewData["GuideId"] = new SelectList(_context.Set<Guide>(), "GuideID", "GuideID");
+            ViewData["Guide"] = new SelectList(_context.Set<Guide>().Select(g => new
+            {
+                g.GuideID,
+                FullName = g.FirstName + " " + g.LastName
+            }).ToList(), "GuideID", "FullName");
+
             return View();
 
         }
@@ -84,7 +87,7 @@ namespace college_assignment_mvc_project.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GuideId"] = new SelectList(_context.Set<Guide>(), "GuideID", "GuideID", track.GuideId);
+            ViewData["Guide"] = new SelectList(_context.Set<Guide>(), "GuideID", "GuideID", track.GuideId);
             return View(track);
         }
 
@@ -101,8 +104,13 @@ namespace college_assignment_mvc_project.Controllers
             {
                 return NotFound();
             }
-            ViewData["GuideId"] = new SelectList(_context.Set<Guide>(), "GuideID", "GuideID", track.GuideId);
-            return View(track);
+            ViewData["GuideId"] = new SelectList(_context.Set<Guide>().Select(g => new
+            {
+                g.GuideID,
+                FullName = g.FirstName + " " + g.LastName
+            }).ToList(), "GuideID", "FullName");
+
+            return View();
         }
 
         public async Task<IActionResult> Info(int? id)
