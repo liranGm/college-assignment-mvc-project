@@ -58,6 +58,13 @@ namespace college_assignment_mvc_project.Controllers
             if (!AuthorizationMiddleware.IsUserLoggedIn(HttpContext.Session))
                 return redirect_to_login_page();
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID");
+
+            if (TempData["TrackID"] != null && TempData["GuideID"] != null)
+            {
+                ViewData["TrackID"] = TempData["TrackID"];
+                ViewData["GuideID"] = TempData["GuideID"];
+            }
+
             return View();
         }
 

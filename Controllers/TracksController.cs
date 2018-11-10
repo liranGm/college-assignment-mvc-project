@@ -47,6 +47,10 @@ namespace college_assignment_mvc_project.Controllers
             ViewData["GuideName"] = guide.FirstName + " " + guide.LastName;
             ViewData["GuideRate"] = guide.Rate;
 
+            
+            TempData["TrackID"] = track.TrackID;
+            TempData["GuideID"] = track.GuideId;
+
             return View(track);
         }
 
