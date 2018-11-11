@@ -68,8 +68,6 @@ namespace college_assignment_mvc_project.Controllers
                 var userID2 = Int32.Parse(HttpContext.Session.GetString("UserID"));
                 var track_for_this_user = _context.Order.Where(user => user.UserID == userID2).Select(order => order.PurchasedTrackID).ToList();
 
-               // List<string> selectedAreaList = new List<string>();
-
                 Dictionary<int, string> dictionary = new Dictionary<int, string>();
 
                 foreach (var trackID in track_for_this_user)

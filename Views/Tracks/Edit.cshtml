@@ -26,7 +26,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
+                @{
+                    List<SelectListItem> listItems = new List<SelectListItem>();
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Tzafon",
+                        Value = "Tzafon"
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Merkaz",
+                        Value = "Merkaz"
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Darom",
+                        Value = "Darom"
+                    });
+                }
+
+                <select asp-for="Location" asp-items="listItems" class="options"></select>
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="form-group">
