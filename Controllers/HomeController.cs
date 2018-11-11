@@ -39,16 +39,22 @@ namespace college_assignment_mvc_project.Controllers
 
         public IActionResult Search(string search)
         {
-            IQueryable<Track> result = null;
-            result = _context.Track
-                .Where(t => 
-                    t.Name.Contains(search) || 
-                    t.Location.Contains(search)
-                );
+            var ordered_tracks = (from track in _context.Track
+                                 where track.Name.Contains(search) || track.Location.Contains(search)
+                                 group track by track.GuideId into orderedTracks
+                                 orderby orderedTracks.Key
+                                 select orderedTracks).ToList();
 
+            List<Track> result = new List<Track>();
+            foreach (var groupedTracks in ordered_tracks)
+            {
+                foreach(var singleTrack in groupedTracks)
+                {
+                    result.Add(singleTrack);
+                }
+            }
             ViewData["Message"] = search;
             ViewData["Result"] = result;
-
             return View();
         }
 
